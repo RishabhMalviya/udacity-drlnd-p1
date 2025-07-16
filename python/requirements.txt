@@ -12,3 +12,5 @@ torch==1.10.2
 pandas
 scipy
 ipykernel
+gym[box2d]==0.26.2
+imageio
