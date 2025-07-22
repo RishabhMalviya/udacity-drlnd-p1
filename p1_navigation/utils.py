@@ -42,7 +42,8 @@ def train_agent(
     agent,
     n_episodes=2000,
     max_t=300,
-    eps_scheduler=EpsScheduler()
+    eps_scheduler=EpsScheduler(),
+    save_location='checkpoint.pth'
 ):
     """Deep Q-Learning.
     
@@ -87,7 +88,7 @@ def train_agent(
             scores.append(score)
             
             if _check_solved(i_episode, scores_window):
-                torch.save(agent.qnetwork_local.state_dict(), 'checkpoint.pth')
+                torch.save(agent.qnetwork_local.state_dict(), save_location)
                 solved = True
                 break
     finally:
@@ -96,7 +97,7 @@ def train_agent(
     return scores, solved
 
 
-def plot_scores(scores):
+def plot_scores(scores, save_filename='scores.png'):
     fig = plt.figure()
     ax = fig.add_subplot(111)
 
@@ -111,9 +112,10 @@ def watch_agent(
     env,
     agent,
     n_episodes=5,
-    max_t=300
+    max_t=300,
+    weights_location='checkpoint.pth'
 ):
-    agent.qnetwork_local.load_state_dict(torch.load('checkpoint.pth'))
+    agent.qnetwork_local.load_state_dict(torch.load(weights_location))
     agent.qnetwork_local.eval()
 
     brain_name = env.brain_names[0]

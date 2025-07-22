@@ -61,12 +61,18 @@ python -m ipykernel install --user --name drlnd --display-name "drlnd"
 # Instructions
 
 ## Running the Training Code
-To train the agent, make sure the `conda` environment is activated (if it isn't, run `source activate drlnd`), and that you are in the root of the repository. Then do either of the following:
+To train the agent, make sure the `conda` environment is activated (if it isn't, run `source activate drlnd`), and that you are in the root of the repository. Then:
 
-- Run `jupyter notebook` (for Jupyter notebook), then open Jupyter the `p1_navigation/Training.ipynb` notebook in the browser, and run all of the cells
-- Run `cd ./p1_navigation` followed by `python main.py`
+1. Navigate into the `p1_navigation` folder with: `cd ./p1_navigation` 
+2. Run the training script: `python main.py`
 
 If the environment gets solved, the model weights will get saved in `p1_navigation/checkpoint.pth`, and you will see a simulation of the trained agent.
 
 ## Report
 The details of the successfully trained agent and the learning algorithm can be found in `Report.ipynb`.
+
+## Watch Trained Agent
+To watch the trained agent:
+
+1. Run `jupyter notebook`
+2. Run the `p1_navigation/Watch Trained Agent.ipynb` Jupyter notebook.
