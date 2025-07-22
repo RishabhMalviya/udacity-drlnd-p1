@@ -1,61 +1,50 @@
 [//]: # (Image References)
-
-[image1]: https://user-images.githubusercontent.com/10624937/42135602-b0335606-7d12-11e8-8689-dd1cf9fa11a9.gif "Trained Agents"
+[image1]: https://user-images.githubusercontent.com/10624937/42135619-d90f2f28-7d12-11e8-8823-82b970a54d7e.gif "Trained Agent"
 [image2]: https://user-images.githubusercontent.com/10624937/42386929-76f671f0-8106-11e8-9376-f17da2ae852e.png "Kernel"
 
-# Value-Based Methods
+This is my submission for Project 1 of Udacity's Deep Reinforcement Learning Nanodegree, Value-Based Methods.
 
-![Trained Agents][image1]
+# Environment Details
 
-This repository contains material related to Udacity's Value-based Methods course.
+The environment is a Unity ML Agents environment. It is a a large, square world with yellow bananas and blue bananas:
 
-## Table of Contents
+![Trained Agent][image1]
 
-### Tutorials
+## Reward Structure
+A reward of +1 is provided for collecting a yellow banana, and a reward of -1 is provided for collecting a blue banana. The goal of the agent is to collect as many yellow bananas as possible while avoiding blue bananas.  
 
-The tutorials lead you through implementing various algorithms in reinforcement learning.  All of the code is in PyTorch (v0.4) and Python 3.
+## State and Action Spaces
+The state space has 37 dimensions and contains the agent's velocity, along with ray-based perception of objects around agent's forward direction.  Given this information, the agent has to learn how to best select actions.  Four discrete actions are available, corresponding to:
+- **`0`** - move forward.
+- **`1`** - move backward.
+- **`2`** - turn left.
+- **`3`** - turn right.
 
-* [Deep Q-Network](https://github.com/udacity/Value-based-methods/tree/main/dqn): Explore how to use a Deep Q-Network (DQN) to navigate a space vehicle without crashing.
+## Completion Criteria
+The task is episodic, and in order to solve the environment, the agent must get an average score of +13 over 100 consecutive episodes.
 
-### Labs / Projects
+# Getting Started
 
-The labs and projects can be found below.  All of the projects use rich simulation environments from [Unity ML-Agents](https://github.com/Unity-Technologies/ml-agents).
+This section will provide instructions on how to setup the repository code. It is tested in a Linux environment.
 
-* [Navigation](https://github.com/udacity/Value-based-methods/tree/main/p1_navigation): In the first project, you will train an agent to collect yellow bananas while avoiding blue bananas.
-
-### Resources
-
-* [Cheatsheet](https://github.com/udacity/Value-based-methods/tree/main/cheatsheet): You are encouraged to use [this PDF file](https://github.com/udacity/Value-based-methods/blob/main/cheatsheet/cheatsheet.pdf) to guide your study of reinforcement learning. 
-
-## OpenAI Gym Benchmarks
-
-### Box2d
-- `LunarLander-v2` with [Deep Q-Networks (DQN)](https://github.com/udacity/Value-based-methods/blob/main/dqn/solution/Deep_Q_Network_Solution.ipynb) | solved in 1504 episodes
-
-## Dependencies
-
-To set up your python environment to run the code in this repository, follow the instructions below.
-
-1. Create (and activate) a new environment with Python 3.6.
-
-	- __Linux__ or __Mac__: 
-	```bash
-	conda create --name drlnd python=3.6
-	source activate drlnd
-	```
-	- __Windows__: 
-	```bash
-	conda create --name drlnd python=3.6 
-	activate drlnd
-	```
-	
-2. Follow the instructions in [this repository](https://github.com/openai/gym) to perform a minimal install of OpenAI gym.  
-	- Install the **box2d** environment group by following the instructions [here](https://github.com/openai/gym#box2d).
-	
-3. Clone the repository (if you haven't already!), and navigate to the `python/` folder.  Then, install several dependencies.
+1. Run the following commands to download and extract the Unity ML Agents environment:
 ```bash
-git clone https://github.com/udacity/Value-based-methods.git
-cd Value-based-methods/python
+cd ./p1_navigation
+wget https://s3-us-west-1.amazonaws.com/udacity-drlnd/P1/Banana/Banana_Linux.zip
+unzip Banana_Linux.zip
+rm Banana_Linux.zip
+cd ..
+```
+
+2. Create (and activate) a new environment with Python 3.6.
+```bash
+conda create --name drlnd python=3.6
+source activate drlnd
+```
+	
+3. Install the python dependencies into the actiavted `conda` environment:
+```bash
+cd ./python
 pip install .
 ```
 
@@ -68,10 +57,16 @@ python -m ipykernel install --user --name drlnd --display-name "drlnd"
 
 ![Kernel][image2]
 
-## Want to learn more?
 
-<p align="center">Come learn with us in the <a href="https://www.udacity.com/course/deep-reinforcement-learning-nanodegree--nd893">Deep Reinforcement Learning Nanodegree</a> program at Udacity!</p>
+# Instructions
 
-<p align="center"><a href="https://www.udacity.com/course/deep-reinforcement-learning-nanodegree--nd893">
- <img width="503" height="133" src="https://user-images.githubusercontent.com/10624937/42135812-1829637e-7d16-11e8-9aa1-88056f23f51e.png"></a>
-</p>
+## Running the Training Code
+To train the agent, make sure the `conda` environment is activated (if it isn't, run `source activate drlnd`), and that you are in the root of the repository. Then do either of the following:
+
+- Run `jupyter notebook` (for Jupyter notebook), then open Jupyter the `p1_navigation/Training.ipynb` notebook in the browser, and run all of the cells
+- Run `cd ./p1_navigation` followed by `python main.py`
+
+If the environment gets solved, the model weights will get saved in `p1_navigation/checkpoint.pth`, and you will see a simulation of the trained agent.
+
+## Report
+The details of the successfully trained agent and the learning algorithm can be found in `Report.ipynb`.

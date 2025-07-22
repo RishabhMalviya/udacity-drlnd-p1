@@ -54,47 +54,87 @@ def train_agent(
         eps_end (float): minimum value of epsilon
         eps_decay (float): multiplicative factor (per episode) for decreasing epsilon
     """
+    solved = False
+
     brain_name = env.brain_names[0]
 
     scores = []
     scores_window = deque(maxlen=100)
-
-    for i_episode in range(1, n_episodes+1):
-        score = 0
-        
-        env_info = env.reset(train_mode=True)[brain_name]
-        state = env_info.vector_observations[0]
-
-        eps = eps_scheduler.get_eps(i_episode)
-        
-        for t in range(max_t):
-            action = agent.act(state, eps)
+    
+    try:
+        for i_episode in range(1, n_episodes+1):
+            score = 0
             
-            env_info = env.step(action)[brain_name]
-            next_state, reward, done = env_info.vector_observations[0], env_info.rewards[0], env_info.local_done[0]
+            env_info = env.reset(train_mode=True)[brain_name]
+            state = env_info.vector_observations[0]
 
-            agent.step(state, action, reward, next_state, done)
+            eps = eps_scheduler.get_eps(i_episode)
             
-            state = next_state
-            score += reward
-            if done:
-                break 
+            for t in range(max_t):
+                action = agent.act(state, eps)
+                
+                env_info = env.step(action)[brain_name]
+                next_state, reward, done = env_info.vector_observations[0], env_info.rewards[0], env_info.local_done[0]
 
-        scores_window.append(score)
-        scores.append(score)
-        
-        if _check_solved(i_episode, scores_window):
-            torch.save(agent.qnetwork_local.state_dict(), 'checkpoint.pth')
+                agent.step(state, action, reward, next_state, done)
+                
+                state = next_state
+                score += reward
+                if done:
+                    break 
 
-    env.close()
+            scores_window.append(score)
+            scores.append(score)
+            
+            if _check_solved(i_episode, scores_window):
+                torch.save(agent.qnetwork_local.state_dict(), 'checkpoint.pth')
+                solved = True
+                break
+    finally:
+        env.close()
 
-    return scores
+    return scores, solved
 
 
 def plot_scores(scores):
     fig = plt.figure()
     ax = fig.add_subplot(111)
+
     plt.plot(np.arange(len(scores)), scores)
     plt.ylabel('Score')
     plt.xlabel('Episode #')
-    plt.show()
+
+    plt.savefig('scores.png')
+
+
+def watch_agent(
+    env,
+    agent,
+    n_episodes=5,
+    max_t=300
+):
+    agent.qnetwork_local.load_state_dict(torch.load('checkpoint.pth'))
+    agent.qnetwork_local.eval()
+
+    brain_name = env.brain_names[0]
+
+    try:
+        for i_episode in range(1, n_episodes+1):
+            env_info = env.reset(train_mode=False)[brain_name]
+            state = env_info.vector_observations[0]
+            score = 0
+
+            for t in range(max_t):
+                action = agent.act(state, 0.0)  # epsilon=0.0 for greedy action
+                
+                env_info = env.step(action)[brain_name]
+                next_state, reward, done = env_info.vector_observations[0], env_info.rewards[0], env_info.local_done[0]
+
+                state = next_state
+                score += reward
+                if done:
+                    break 
+
+            print(f'Episode {i_episode}\tScore: {score:.2f}')
+    finally:
+        env.close()
