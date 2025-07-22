@@ -16,6 +16,7 @@ class QNetwork(nn.Module):
         """
         super(QNetwork, self).__init__()
         self.seed = torch.manual_seed(seed)
+        
         "*** YOUR CODE HERE ***"
         hidden_layer_size = state_size**2
         
