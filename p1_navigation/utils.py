@@ -105,7 +105,7 @@ def plot_scores(scores, save_filename='scores.png'):
     plt.ylabel('Score')
     plt.xlabel('Episode #')
 
-    plt.savefig('scores.png')
+    plt.savefig(save_filename)
 
 
 def watch_agent(
